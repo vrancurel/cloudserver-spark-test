@@ -6,24 +6,26 @@ services:
   spark-master:
     image: vrancurel/spark-master
     ports:
-      - "2181"
-      - "9092"
+      - "8080:8080"
+      - "7077:7077"
+      - "6066:6066"
     networks:
       - backend
     environment:
       FOO: bar
-    command: /usr/bin/supervisord -c /etc/supervisor/supervisord.conf -n
 
   spark-worker:
     image: vrancurel/spark-worker
     ports:
-      - "2181"
-      - "9092"
+      - "8081:8081"
     networks:
       - backend
     environment:
       FOO: bar
-    command: /usr/bin/supervisord -c /etc/supervisor/supervisord.conf -n
+    depends_on:
+      - spark-master
+    deploy:
+      mode: global
 
   s3-data:
     image: vrancurel/s3

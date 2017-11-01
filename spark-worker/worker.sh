@@ -1,0 +1,11 @@
+#!/bin/bash
+
+ # Spark worker actions:
+. "/spark/sbin/spark-config.sh"
+
+. "/spark/bin/load-spark-env.sh"
+
+mkdir -p $SPARK_WORKER_LOG
+
+/spark/bin/spark-class org.apache.spark.deploy.worker.Worker \
+    --webui-port $SPARK_WORKER_WEBUI_PORT $SPARK_MASTER >> $SPARK_WORKER_LOG/spark-worker.out
